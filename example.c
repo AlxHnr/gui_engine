@@ -53,18 +53,6 @@ static void checkboxCallback(const g_event *event,
   }
 }
 
-static void popUpLabelCallback(const g_event *event,
-                               g_widget *widget,
-                               void *user_data)
-{
-  g_window *pop_up = user_data;
-
-  if(event->type == G_MOUSE_MOTION)
-  {
-    g_open_pop_up(pop_up);
-  }
-}
-
 static g_window *createDemoWindow(int x, int y)
 {
   g_window *window = g_create_window(x, y, 400, 300, "Test Window");
@@ -101,17 +89,12 @@ static g_window *createDemoWindow(int x, int y)
   g_attach_drop_down_list(window, window->w - 100, 55, 100,
                           "Item 1\nItem 2\nItem 3");
 
-  /* Create pop-up window. */
-  g_window *pop_up_window = g_create_pop_up_window(165, 80);
-  g_attach_text(pop_up_window, 25, 15, 0, 0, "example pop-up");
-  g_attach_input_box(pop_up_window, 0, 35, 0, 0);
-
-  /* Attach label for spawning a pop-up. */
-  g_widget *pop_up_label = g_attach_text(window, window->w - 140, 250, 0,
-                                         G_CHAR_H, "move mouse here");
-
-  pop_up_label->event_function = popUpLabelCallback;
-  pop_up_label->event_data = pop_up_window;
+  /* Attach label with pop-up window. */
+  g_widget *label = g_attach_text(window, window->w - 140, 250, 0,
+                                  G_CHAR_H, "move mouse here");
+  label->pop_up = g_create_pop_up_window(165, 80);
+  g_attach_text(label->pop_up, 25, 15, 0, 0, "example pop-up");
+  g_attach_input_box(label->pop_up, 0, 35, 0, 0);
 
   /* Attach slider. */
   g_attach_slider_h(window, 0, window->h - 20, 0, 0.5, 1.0);
