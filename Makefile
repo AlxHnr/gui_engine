@@ -5,7 +5,7 @@ LDFLAGS = `sdl-config --libs` -lSDL_gfx
 all: example
 
 example: $(wildcard *.c)
-	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $^ $(LDFLAGS) -o $@
 run: example
 	./example
 clean:
